@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Samurai: Chronicles of Tsukishima</title>
+  <meta name="description" content="A complete 16:9 dark-fantasy martial arts fighting game inspired by Shadow Fight 2 and Ghost of Tsushima.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- MASTER 16:9 GAME CONTAINER -->
+  <main class="game-viewport" id="game-viewport">
+    <div class="aspect-stage-16-9" id="aspect-stage">
+
+      <!-- ====================================================================
+           UNIVERSAL TOP NAVIGATION & PLAYER CREST
+           ==================================================================== -->
+      <header class="top-hud-bar" id="universal-top-hud" role="banner">
+        <!-- Player Profile -->
+        <div class="hud-player-profile">
+          <div class="player-avatar-crest" id="hud-player-crest" title="Shadow Clan Crest">影</div>
+          <div class="player-details">
+            <span class="player-name" id="hud-player-name">Jin Kageyoshi</span>
+            <div class="player-meta">
+              <span class="player-title" id="hud-style-title">Shadow Ronin</span>
+              <span>•</span>
+              <span class="level-tag" id="hud-player-level">Lv. 48</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Global View Navigation Tabs -->
+        <nav class="act-navigation" aria-label="Game Navigation">
+          <button class="act-nav-tab" id="nav-btn-hub" type="button">⛩️ HUB</button>
+          <button class="act-nav-tab active-act" id="nav-btn-map" type="button">📜 MAP</button>
+          <button class="act-nav-tab" id="nav-btn-modes" type="button">🏆 MODES</button>
+          <button class="act-nav-tab" id="nav-btn-forge" type="button">⚒️ FORGE</button>
+          <button class="act-nav-tab" id="nav-btn-merchant" type="button">🛍️ BAZAAR</button>
+          <button class="act-nav-tab" id="nav-btn-inventory" type="button">🎒 GEAR</button>
+          <button class="act-nav-tab" id="nav-btn-combos" type="button">📖 COMBOS</button>
+          <button class="act-nav-tab" id="nav-btn-quests" type="button">📜 QUESTS</button>
+          <button class="act-nav-tab" id="nav-btn-codex" type="button">📖 CODEX</button>
+          <button class="act-nav-tab" id="nav-btn-achievements" type="button">🎖️ AWARDS</button>
+          <button class="act-nav-tab" id="nav-btn-saves" type="button">💾 SAVES</button>
+          <button class="act-nav-tab" id="nav-btn-profile" type="button">👤 PROFILE</button>
+        </nav>
+
+        <!-- Currencies & System Controls -->
+        <div class="hud-right-group">
+          <div class="currency-badge" title="Gold Koku">
+            <span class="currency-icon">🪙</span>
+            <span class="currency-val" id="hud-gold-val">42,500</span>
+          </div>
+          <div class="currency-badge cyan-essence" title="Shadow Soul Essence">
+            <span class="currency-icon">💠</span>
+            <span class="currency-val" id="hud-souls-val">1,840</span>
+          </div>
+          <div class="currency-badge" title="Vermilion Clan Seals">
+            <span class="currency-icon">💮</span>
+            <span class="currency-val" id="hud-seals-val">14</span>
+          </div>
+          
+          <select class="sys-locale-select" id="locale-selector" title="Language / භාෂාව / மொழி">
+            <option value="en">EN</option>
+            <option value="si">සිං (SI)</option>
+            <option value="ta">தம (TA)</option>
+          </select>
+          <button class="sys-icon-btn" id="trials-toggle-btn" type="button" title="Gauntlet & Daily Challenges [C]">
+            🏆 <span>TRIALS</span>
+          </button>
+          <button class="sys-icon-btn" id="world-toggle-btn" type="button" title="World Map & Secrets [W]">
+            📜 <span>WORLD</span>
+          </button>
+          <button class="sys-icon-btn" id="credits-toggle-btn" type="button" title="Credits & Licenses">
+            ℹ️ <span>CREDITS</span>
+          </button>
+          <button class="sys-icon-btn" id="qa-dashboard-toggle-btn" type="button" title="QA & Balance Dashboard [F4]">
+            📊 <span>QA METRICS</span>
+          </button>
+          <button class="sys-icon-btn" id="audio-toggle-btn" type="button" title="Toggle Game Audio [M]">
+            🔊 <span>SOUND ON</span>
+          </button>
+          <button class="sys-icon-btn" id="settings-toggle-btn" type="button" title="Settings & Keybinds">
+            ⚙️ <span>SETTINGS</span>
+          </button>
+          <button class="sys-icon-btn" id="fullscreen-toggle-btn" type="button" title="Toggle Fullscreen [F]">
+            ⛶ <span>FULLSCREEN</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ====================================================================
+           VIEW 1: THE FORGOTTEN DOJO (HUB AREA - SPEC 114)
+           ==================================================================== -->
+      <section class="game-view" id="view-hub" style="display: none;">
+        <div class="dojo-hub-backdrop">
+          <div class="dojo-sun-disc"></div>
+          <div class="dojo-mist-fog"></div>
+          
+          <div class="hub-center-content">
+            <span class="hub-subtitle">SANCTUARY OF THE SILENT VEIL</span>
+            <h1 class="hub-title">THE FORGOTTEN DOJO</h1>
+            <p class="hub-desc">From this sacred pavilion, master the five martial arts styles, forge mythical blades, and dismantle the Demon Shogun's invasion.</p>
+
+            <!-- NPC Dialog Bar (Spec 113) -->
+            <div class="hub-npcs-row">
+              <button class="npc-bubble-card" id="npc-btn-master" type="button">
+                <span class="npc-avatar">🥋</span>
+                <div class="npc-meta">
+                  <span class="npc-name">Grandmaster Jin</span>
+                  <span class="npc-role">Martial Wisdom</span>
+                </div>
+              </button>
+              <button class="npc-bubble-card" id="npc-btn-blacksmith" type="button">
+                <span class="npc-avatar">⚒️</span>
+                <div class="npc-meta">
+                  <span class="npc-name">Muramasa</span>
+                  <span class="npc-role">Master Smith</span>
+                </div>
+              </button>
+              <button class="npc-bubble-card" id="npc-btn-merchant" type="button">
+                <span class="npc-avatar">🏮</span>
+                <div class="npc-meta">
+                  <span class="npc-name">Kenji</span>
+                  <span class="npc-role">Wandering Merchant</span>
+                </div>
+              </button>
+              <button class="npc-bubble-card" id="npc-btn-mystic" type="button">
+                <span class="npc-avatar">🔮</span>
+                <div class="npc-meta">
+                  <span class="npc-name">Priestess Tomoe</span>
+                  <span class="npc-role">Order of Dawn</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- RPG Attributes Allocator Widget (Spec 86) -->
+            <div class="hub-attributes-bar">
+              <span class="attr-bar-title">ATTRIBUTES (POINTS: <b id="hub-attr-points">6</b>):</span>
+              <div class="attr-pills-row" id="hub-attr-pills"></div>
+            </div>
+
+            <!-- Hub Action Gates Grid -->
+            <div class="hub-gates-grid">
+              <button class="hub-gate-card" id="gate-story-map">
+                <span class="gate-icon">📜</span>
+                <h3 class="gate-title">STORY CAMPAIGN</h3>
+                <span class="gate-status">Act II: The Iron Pagoda [ACTIVE]</span>
+              </button>
+              <button class="hub-gate-card" id="gate-training-dojo">
+                <span class="gate-icon">🥋</span>
+                <h3 class="gate-title">TRAINING DOJO</h3>
+                <span class="gate-status">Sparring Automaton & Frame Telemetry</span>
+              </button>
+              <button class="hub-gate-card" id="gate-modes-menu">
+                <span class="gate-icon">⚔️</span>
+                <h3 class="gate-title">COMBAT MODES</h3>
+                <span class="gate-status">Survival • Boss Rush • Arcade</span>
+              </button>
+              <button class="hub-gate-card" id="gate-forge">
+                <span class="gate-icon">⚒️</span>
+                <h3 class="gate-title">MURAMASA FORGE</h3>
+                <span class="gate-status">Weapons & Durability Upgrades</span>
+              </button>
+              <button class="hub-gate-card" id="gate-merchant">
+                <span class="gate-icon">🛍️</span>
+                <h3 class="gate-title">MERCHANT BAZAAR</h3>
+                <span class="gate-status">Talismans & Rare Artifacts</span>
+              </button>
+              <button class="hub-gate-card" id="gate-inventory">
+                <span class="gate-icon">🎒</span>
+                <h3 class="gate-title">INVENTORY & GEAR</h3>
+                <span class="gate-status">Weapons, Armor & Charms</span>
+              </button>
+              <button class="hub-gate-card" id="gate-combos">
+                <span class="gate-icon">📖</span>
+                <h3 class="gate-title">COMBO DATABASE</h3>
+                <span class="gate-status">Discovered Recipes & Tiers</span>
+              </button>
+              <button class="hub-gate-card" id="gate-saves">
+                <span class="gate-icon">💾</span>
+                <h3 class="gate-title">SAVE REPOSITORY</h3>
+                <span class="gate-status">3-Slot System & JSON Export</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: ANCIENT PARCHMENT PROGRESSION MAP
+           ==================================================================== -->
+      <section class="game-view active-view" id="view-map">
+        <!-- DARK LACQUERED WOOD TABLE BACKGROUND -->
+        <div class="wood-table-surface" aria-hidden="true">
+          <div class="table-stud stud-top-1"></div>
+          <div class="table-stud stud-top-2"></div>
+          <div class="table-stud stud-bot-1"></div>
+          <div class="table-stud stud-bot-2"></div>
+        </div>
+
+        <!-- UNFURLED PARCHMENT SCROLL -->
+        <div class="parchment-scroll-wrapper" id="scroll-wrapper">
+          <div class="parchment-scroll" id="parchment-scroll">
+            <div class="burnt-scorch-border" aria-hidden="true"></div>
+
+            <!-- Golden Corner Caps -->
+            <div class="golden-corner-cap cap-tl" aria-hidden="true">
+              <svg viewBox="0 0 100 100"><path d="M0,0 L100,0 C85,25 60,35 40,40 C35,60 25,85 0,100 Z" fill="#ffd875" /><path d="M5,5 L85,5 C75,25 50,32 35,35 C32,50 25,75 5,85 Z" fill="#aa823a" /></svg>
+            </div>
+            <div class="golden-corner-cap cap-tr" aria-hidden="true">
+              <svg viewBox="0 0 100 100"><path d="M0,0 L100,0 C85,25 60,35 40,40 C35,60 25,85 0,100 Z" fill="#ffd875" /><path d="M5,5 L85,5 C75,25 50,32 35,35 C32,50 25,75 5,85 Z" fill="#aa823a" /></svg>
+            </div>
+            <div class="golden-corner-cap cap-bl" aria-hidden="true">
+              <svg viewBox="0 0 100 100"><path d="M0,0 L100,0 C85,25 60,35 40,40 C35,60 25,85 0,100 Z" fill="#ffd875" /><path d="M5,5 L85,5 C75,25 50,32 35,35 C32,50 25,75 5,85 Z" fill="#aa823a" /></svg>
+            </div>
+            <div class="golden-corner-cap cap-br" aria-hidden="true">
+              <svg viewBox="0 0 100 100"><path d="M0,0 L100,0 C85,25 60,35 40,40 C35,60 25,85 0,100 Z" fill="#ffd875" /><path d="M5,5 L85,5 C75,25 50,32 35,35 C32,50 25,75 5,85 Z" fill="#aa823a" /></svg>
+            </div>
+
+            <!-- Scroll Rollers -->
+            <div class="scroll-roller roller-left" aria-hidden="true"></div>
+            <div class="scroll-roller roller-right" aria-hidden="true"></div>
+
+            <!-- Drifting Particles Canvas -->
+            <canvas id="particles-canvas"></canvas>
+
+            <!-- SVG Winding Golden Route -->
+            <svg id="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+            <!-- 6 Medallion Nodes -->
+            <div id="nodes-container" role="region" aria-label="Progression Map Stages"></div>
+          </div>
+        </div>
+
+        <!-- BOTTOM HUD BAR -->
+        <footer class="bottom-hud-bar" role="contentinfo">
+          <div class="progression-summary">
+            <span class="prog-track-label">ACT II PROGRESSION</span>
+            <div class="prog-bar-wrap" title="50% Completed"><div class="prog-bar-fill"></div></div>
+            <span class="prog-track-label">3 / 6 VANQUISHED</span>
+          </div>
+
+          <div class="map-status-legend" aria-label="Map Legend">
+            <div class="legend-item"><span class="legend-dot dot-active"></span><span>ACTIVE TARGET</span></div>
+            <div class="legend-item"><span class="legend-dot dot-completed"></span><span>VANQUISHED (VERMILION)</span></div>
+            <div class="legend-item"><span class="legend-dot dot-locked"></span><span>CHAINED (LOCKED)</span></div>
+          </div>
+
+          <div class="hud-player-cp">
+            <span>COMBAT POWER:</span>
+            <span class="cp-highlight">4,850 CP</span>
+            <span style="color: #a89476; font-size: 0.7rem;">[Kuro-Dragon Katana]</span>
+          </div>
+
+          <div class="hud-key-shortcuts">
+            <span><kbd>SPACE</kbd> Fight</span>
+            <span><kbd>ESC</kbd> Close</span>
+            <span><kbd>M</kbd> Audio</span>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: THE REAL-TIME MARTIAL ARTS COMBAT ARENA
+           ==================================================================== -->
+      <section class="game-view" id="view-arena" style="display: none;">
+        <!-- Real-Time Combat Canvas -->
+        <canvas id="combat-canvas"></canvas>
+
+        <!-- Dynamic Combat HUD -->
+        <div class="combat-battle-hud" id="combat-battle-hud">
+          <!-- Top Match Header: Player vs Enemy Vitals -->
+          <div class="battle-vitals-row">
+            <!-- Player Bar -->
+            <div class="fighter-vital-card player-vitals">
+              <div class="vital-header-line">
+                <span class="vital-name" id="arena-player-name">JIN KAGEYOSHI</span>
+                <span class="vital-style-pill" id="arena-player-style">SHADOW STYLE</span>
+              </div>
+              <div class="bar-container hp-bar-wrap">
+                <div class="bar-lag hp-lag" id="player-hp-lag"></div>
+                <div class="bar-fill hp-fill" id="player-hp-fill" style="width: 100%;"></div>
+                <span class="bar-label" id="player-hp-text">1000 / 1000</span>
+              </div>
+              <div class="vital-sub-bars">
+                <!-- Stamina Bar -->
+                <div class="bar-container stamina-wrap" title="Stamina (Depletion = Exhaustion)">
+                  <div class="bar-fill stamina-fill" id="player-stamina-fill" style="width: 100%;"></div>
+                </div>
+                <!-- Guard Meter -->
+                <div class="bar-container guard-wrap" title="Guard Meter (Break = Vulnerable)">
+                  <div class="bar-fill guard-fill" id="player-guard-fill" style="width: 100%;"></div>
+                </div>
+              </div>
+              <!-- Energy Gauge (25%, 50%, 75%, 100%) -->
+              <div class="energy-gauge-row">
+                <div class="energy-pip" id="eng-pip-25">25%</div>
+                <div class="energy-pip" id="eng-pip-50">50%</div>
+                <div class="energy-pip" id="eng-pip-75">75%</div>
+                <div class="energy-pip pip-ult" id="eng-pip-100">ULT READY</div>
+                <button class="rage-btn" id="btn-activate-rage" title="Activate Rage Mode [R]">RAGE (0%)</button>
+              </div>
+            </div>
+
+            <!-- VS Badge -->
+            <div class="battle-center-badge">
+              <span class="battle-vs-text">VS</span>
+              <span class="battle-timer-text" id="arena-battle-timer">00:00</span>
+            </div>
+
+            <!-- Enemy Bar -->
+            <div class="fighter-vital-card enemy-vitals">
+              <div class="vital-header-line">
+                <span class="vital-style-pill" id="arena-enemy-style">IRON STYLE</span>
+                <span class="vital-name" id="arena-enemy-name">LORD YOSHITERU</span>
+              </div>
+              <div class="bar-container hp-bar-wrap">
+                <div class="bar-lag hp-lag" id="enemy-hp-lag"></div>
+                <div class="bar-fill hp-fill enemy-hp-fill" id="enemy-hp-fill" style="width: 100%;"></div>
+                <span class="bar-label" id="enemy-hp-text">1750 / 1750</span>
+              </div>
+              <div class="vital-sub-bars">
+                <div class="bar-container stamina-wrap">
+                  <div class="bar-fill stamina-fill" id="enemy-stamina-fill" style="width: 100%;"></div>
+                </div>
+                <div class="bar-container guard-wrap">
+                  <div class="bar-fill guard-fill" id="enemy-guard-fill" style="width: 100%;"></div>
+                </div>
+              </div>
+              <div class="enemy-phase-badge" id="arena-enemy-phase">PHASE 1 • VANGUARD GUARD</div>
+            </div>
+          </div>
+
+          <!-- Style Rank & Flow Momentum Meter (Spec 284, 286) -->
+          <div class="combat-style-flow-card" id="combat-style-flow-card">
+            <div class="style-rank-badge" id="hud-style-rank" title="Dynamic Combat Style Variety">
+              <span class="style-letter" id="hud-style-letter">C</span>
+              <span class="style-caption">STYLE</span>
+            </div>
+            <div class="flow-meter-container" title="Combat Momentum Flow State">
+              <div class="flow-bar-track">
+                <div class="flow-bar-fill" id="hud-flow-fill" style="width: 0%;"></div>
+              </div>
+              <span class="flow-label" id="hud-flow-label">FLOW 0%</span>
+            </div>
+          </div>
+
+          <!-- Combo Counter & Notifications (Center Screen) -->
+          <div class="combo-feedback-container" id="combo-feedback-container" style="display: none;">
+            <div class="combo-hit-number" id="combo-hit-num">3</div>
+            <div class="combo-tier-title" id="combo-tier-title">BRUTAL</div>
+            <div class="combo-dmg-total" id="combo-dmg-total">185 DMG</div>
+          </div>
+
+          <!-- Contextual Hint Banner (Spec 323, 326) -->
+          <div class="contextual-hint-banner" id="contextual-hint-banner" style="display: none;">
+            <span class="hint-icon">💡</span>
+            <span class="hint-text" id="contextual-hint-text">Tip: Use Heavy Attack [K] to shatter guarding shields!</span>
+          </div>
+
+          <!-- Execution Prompt (Spec 79) -->
+          <div class="execution-prompt-banner" id="execution-prompt-banner" style="display: none;">
+            <span class="exec-icon">⚡</span>
+            <span class="exec-text">EXECUTION WINDOW OPEN — PRESS [U]</span>
+          </div>
+
+          <!-- Training Mode Controls Toolbar (Spec 104) -->
+          <div class="training-toolbar" id="training-toolbar" style="display: none;">
+            <span class="training-label">🥋 TRAINING DOJO:</span>
+            <select class="training-select" id="training-dummy-select">
+              <option value="idle">Dummy: Idle</option>
+              <option value="block">Dummy: Guard Always</option>
+              <option value="auto_block">Dummy: Auto-Block</option>
+              <option value="counter">Dummy: Counter</option>
+              <option value="attack">Dummy: Light Attack</option>
+              <option value="random">Dummy: Random</option>
+            </select>
+            <button class="sys-icon-btn btn-sm" id="btn-toggle-hitboxes">HITBOXES: OFF</button>
+            <button class="sys-icon-btn btn-sm" id="btn-toggle-framedata">FRAME DATA: OFF</button>
+            <button class="sys-icon-btn btn-sm" id="btn-reset-training">RESET POSITION</button>
+          </div>
+
+          <!-- Consumables Row (Spec 194) -->
+          <div class="combat-consumables-row" id="combat-consumables-row">
+            <button class="consumable-slot-btn" id="btn-use-gourd" title="Healing Gourd [1]">
+              <span class="slot-key">1</span>
+              <span class="slot-icon">🍶</span>
+              <span class="slot-count" id="count-gourd">x3</span>
+            </button>
+            <button class="consumable-slot-btn" id="btn-use-elixir" title="Spirit Elixir [2]">
+              <span class="slot-key">2</span>
+              <span class="slot-icon">🧪</span>
+              <span class="slot-count" id="count-elixir">x2</span>
+            </button>
+            <button class="consumable-slot-btn" id="btn-use-tonic" title="Tiger Tonic [3]">
+              <span class="slot-key">3</span>
+              <span class="slot-icon">🍯</span>
+              <span class="slot-count" id="count-tonic">x2</span>
+            </button>
+          </div>
+
+          <!-- Bottom Action Buttons / Touch Controls -->
+          <div class="combat-touch-bar">
+            <button class="combat-key-btn" data-action="light" title="Light Attack [J]">J • LIGHT</button>
+            <button class="combat-key-btn" data-action="kick" title="Kick [K]">K • KICK</button>
+            <button class="combat-key-btn" data-action="heavy" title="Heavy Slash [L]">L • HEAVY</button>
+            <button class="combat-key-btn btn-sp" data-action="special" title="Special Attack [I]">I • SPECIAL</button>
+            <button class="combat-key-btn btn-ult" data-action="ultimate" title="Ultimate Attack [U]">U • ULTIMATE</button>
+            <button class="combat-key-btn" data-action="dodge" title="Dodge [SPACE]">SPACE • DODGE</button>
+            <button class="combat-key-btn" data-action="block" title="Block / Guard [SHIFT]">SHIFT • BLOCK</button>
+            <button class="combat-key-btn" data-action="throw" title="Grab / Throw [G]">G • THROW</button>
+            <button class="combat-key-btn" data-action="escape" title="Combo Breaker [B]">B • ESCAPE</button>
+            <button class="combat-key-btn" data-action="switch" title="Switch Fighting Style [Q]">Q • STYLE</button>
+            <button class="combat-key-btn" id="btn-toggle-debugger" title="Frame Debugger [F4]">🐞 DEBUG</button>
+            <button class="combat-key-btn" id="btn-arena-photo" title="Photo Mode [P]">📷 PHOTO</button>
+            <button class="combat-key-btn btn-danger" id="btn-retreat-battle" title="Retreat to Map [ESC]">ESC • RETREAT</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: GAME MODES SELECTOR (SPEC 100 - 103)
+           ==================================================================== -->
+      <section class="game-view" id="view-modes" style="display: none;">
+        <div class="modes-screen-content">
+          <h2 class="section-title">CHALLENGE & ENDGAME MODES</h2>
+          
+          <!-- Challenge Modifiers Selection Bar (Spec 95) -->
+          <div class="modifiers-bar">
+            <span class="mod-bar-title">⚔️ CHALLENGE MODIFIERS:</span>
+            <div class="mod-chips-grid" id="modes-modifiers-chips"></div>
+          </div>
+
+          <div class="modes-grid">
+            <div class="mode-card">
+              <span class="mode-icon">🔥</span>
+              <h3 class="mode-name">SURVIVAL MODE</h3>
+              <p class="mode-desc">Continuous enemy waves. Elite warriors every 5 waves, brutal bosses every 10. High score: 18,450.</p>
+              <button class="action-cta-btn btn-active" id="btn-start-survival">ENTER SURVIVAL</button>
+            </div>
+            <div class="mode-card">
+              <span class="mode-icon">👹</span>
+              <h3 class="mode-name">BOSS RUSH</h3>
+              <p class="mode-desc">Consecutive duels against all 5 chapter champions without normal encounters. Timed scoring.</p>
+              <button class="action-cta-btn btn-active" id="btn-start-bossrush">COMMENCE RUSH</button>
+            </div>
+            <div class="mode-card">
+              <span class="mode-icon">🕹️</span>
+              <h3 class="mode-name">ARCADE MODE</h3>
+              <p class="mode-desc">Classic 5-stage tournament ladder against randomized weapon masters ending at the Demon Sovereign.</p>
+              <button class="action-cta-btn btn-active" id="btn-start-arcade">START ARCADE</button>
+            </div>
+            <div class="mode-card">
+              <span class="mode-icon">✨</span>
+              <h3 class="mode-name">NEW GAME+</h3>
+              <p class="mode-desc">Restart campaign with all unlocked weapons, mastery and styles. Enemies deal +60% damage with new modifiers.</p>
+              <button class="action-cta-btn btn-replay" id="btn-start-ngp">ACTIVATE NG+</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           MODAL 1: COMBAT DOSSIER (STAGE INSPECTION)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="combat-dossier-modal" role="dialog" aria-modal="true" aria-labelledby="dossier-stage-title">
+        <div class="dossier-card">
+          <button class="dossier-close-btn" id="dossier-close-btn" type="button" aria-label="Close Dossier">✕</button>
+
+          <!-- Left Pane: Shadow Fighter Silhouette -->
+          <div class="dossier-fighter-pane">
+            <div class="fighter-art-layer"></div>
+            <div class="fighter-art-overlay"></div>
+            <div class="fighter-badge-overlay">
+              <span class="fighter-boss-title" id="dossier-boss-title">SHOGUN EXECUTIONER</span>
+              <h3 class="fighter-boss-name" id="dossier-boss-name">Lord Yoshiteru</h3>
+            </div>
+          </div>
+
+          <!-- Right Pane: Stage Dossier Content -->
+          <div class="dossier-content-pane">
+            <div class="dossier-header">
+              <div class="dossier-titles">
+                <span class="dossier-chapter-tag" id="dossier-chapter">ACT II • CHAPTER 4</span>
+                <h2 class="dossier-stage-heading" id="dossier-stage-title">The Iron Pagoda</h2>
+                <span class="dossier-stage-kanji" id="dossier-stage-jp">鋼鉄の五重塔</span>
+              </div>
+              <div class="difficulty-pill diff-lethal" id="dossier-difficulty-badge">LETHAL ★★★★☆</div>
+            </div>
+
+            <div class="status-banner banner-active" id="dossier-status-banner">⚔️ ACTIVE COMBAT OBJECTIVE</div>
+            <p class="dossier-lore-text" id="dossier-lore">
+              A sacred wooden sanctuary fortified with heavy black iron plating. The brutal Executioner Yoshiteru wields an eight-foot glaive with devastating reach. Breach the gates and silence his reign.
+            </p>
+
+            <div class="dossier-matchup-row">
+              <div class="matchup-box">
+                <span class="matchup-label">PLAYER CP</span>
+                <span class="matchup-val" id="dossier-player-cp">4,850 CP</span>
+              </div>
+              <div class="cp-diff adv-danger" id="dossier-cp-diff">-70 Disadvantage (Lethal Threat)</div>
+              <div class="matchup-box" style="text-align: right;">
+                <span class="matchup-label">RECOMMENDED CP</span>
+                <span class="matchup-val" id="dossier-boss-cp">4,920 CP</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="traits-section-title">CHAMPION TRAITS & MODIFIERS:</div>
+              <div class="traits-container" id="dossier-boss-traits"></div>
+            </div>
+
+            <div>
+              <div class="traits-section-title">VICTORY SPOILS:</div>
+              <div class="spoils-container" id="dossier-spoils-list"></div>
+            </div>
+
+            <button class="action-cta-btn btn-active" id="dossier-action-btn" type="button">
+              <span class="cta-icon">⚔️</span> COMMENCE DUEL
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 2: VICTORY & RESULTS SCREEN (SPEC 123, 134)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="results-modal" role="dialog" style="display: none;">
+        <div class="dossier-card results-card">
+          <div class="results-header">
+            <span class="results-stamp" id="results-title-stamp">VICTORY</span>
+            <div class="results-stars" id="results-stars">★★★</div>
+          </div>
+          <div class="results-telemetry-grid">
+            <div class="telem-item"><span class="telem-label">DAMAGE DEALT</span><span class="telem-val" id="res-dmg-dealt">1,850</span></div>
+            <div class="telem-item"><span class="telem-label">MAX COMBO</span><span class="telem-val" id="res-max-combo">8 HITS</span></div>
+            <div class="telem-item"><span class="telem-label">PERFECT BLOCKS</span><span class="telem-val" id="res-parries">4</span></div>
+            <div class="telem-item"><span class="telem-label">DUEL TIME</span><span class="telem-val" id="res-time">00:48</span></div>
+          </div>
+          <div class="results-loot-row">
+            <span class="loot-badge">+5,000 KOKU</span>
+            <span class="loot-badge">+350 SOULS</span>
+            <span class="loot-badge">+1 VERMILION SEAL</span>
+          </div>
+          <!-- Battle Medals Row (Specs 294-298) -->
+          <div class="results-medals-row" id="results-medals-row" style="display: none; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 10px 0;"></div>
+          <div class="results-actions">
+            <button class="action-cta-btn btn-active" id="btn-results-continue">CONTINUE JOURNEY</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 3: BLACKSMITH & FORGE (SPEC 116)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="forge-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">MURAMASA WEAPON FORGE</h2>
+            <div class="forge-weapons-list" id="forge-weapons-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 4: MERCHANT BAZAAR (SPEC 115)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="merchant-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">KENJI'S WANDERING BAZAAR</h2>
+            <div class="merchant-items-grid" id="merchant-items-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 5: CATEGORIZED INVENTORY & GEAR (SPEC 118)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="inventory-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">INVENTORY & ARSENAL</h2>
+            <div class="inventory-tabs-row">
+              <button class="inv-tab-btn active-inv-tab" data-cat="all">ALL</button>
+              <button class="inv-tab-btn" data-cat="weapons">WEAPONS</button>
+              <button class="inv-tab-btn" data-cat="equipment">ARMOR</button>
+              <button class="inv-tab-btn" data-cat="charms">CHARMS</button>
+              <button class="inv-tab-btn" data-cat="materials">MATERIALS</button>
+            </div>
+            <div class="inventory-grid" id="inventory-items-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 6: COMBO DATABASE & RECIPES (SPEC 72)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="combos-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">MARTIAL ARTS COMBO DATABASE</h2>
+            <div class="combos-scroll-area" id="combos-scroll-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 7: 40 ACHIEVEMENTS HALL (SPEC 97)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="achievements-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">HALL OF AWARDS (40 ACHIEVEMENTS)</h2>
+            <div class="achievements-scroll-area" id="achievements-scroll-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 8: LORE CODEX & FACTIONS (SPEC 120, 121)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="codex-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">CHRONICLES OF TSUKISHIMA CODEX</h2>
+            <div class="codex-factions-list" id="codex-factions-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 9: QUEST LOG & DAILY CHALLENGES (SPEC 96, 119)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="quests-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">ACTIVE QUESTS & DAILY DISCIPLINES</h2>
+            <div class="quests-scroll-area" id="quests-scroll-area"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 10: SAVE REPOSITORY (3-SLOT & JSON EXPORT/IMPORT) (SPEC 137, 138)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="saves-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">SAVE REPOSITORY & RECOVERY</h2>
+            <div class="save-slots-grid" id="save-slots-grid"></div>
+            <div class="save-json-controls">
+              <span class="json-ctl-label">JSON BACKUP & TRANSFER:</span>
+              <button class="sys-icon-btn btn-sm" id="btn-export-save-json">EXPORT ACTIVE SAVE</button>
+              <label class="sys-icon-btn btn-sm" style="cursor: pointer;">
+                IMPORT SAVE JSON
+                <input type="file" id="input-import-save-json" accept=".json" style="display: none;">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 11: SETTINGS & ACCESSIBILITY (SPEC 126)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="settings-modal" role="dialog" style="display: none;">
+        <div class="dossier-card">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">SETTINGS & ACCESSIBILITY</h2>
+            <div class="settings-form">
+              <label class="setting-row">
+                <span>Screen Shake (Combat Impacts)</span>
+                <input type="checkbox" id="set-screen-shake" checked>
+              </label>
+              <label class="setting-row">
+                <span>Reduced Screen Flash</span>
+                <input type="checkbox" id="set-reduced-flash">
+              </label>
+              <label class="setting-row">
+                <span>Difficulty Preset</span>
+                <select id="set-difficulty" class="training-select">
+                  <option value="easy">Novice (Easy)</option>
+                  <option value="normal" selected>Warrior (Normal)</option>
+                  <option value="lethal">Master (Lethal)</option>
+                </select>
+              </label>
+              <div class="keybinds-overview">
+                <h3>COMBAT KEYBINDINGS:</h3>
+                <p>Move: <b>[A] / [D]</b> | Jump: <b>[W]</b> | Crouch: <b>[S]</b></p>
+                <p>Light Strike: <b>[J]</b> | Kick: <b>[K]</b> | Heavy Slash: <b>[L]</b></p>
+                <p>Special Ability: <b>[I]</b> | Ultimate: <b>[U]</b> | Dodge: <b>[SPACE]</b> | Block: <b>[SHIFT]</b></p>
+                <p>Switch Style: <b>[Q]</b> | Rage Mode: <b>[R]</b> | Photo Mode: <b>[P]</b> | Dev Overlay: <b>[F3]</b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 12: CINEMATIC STORY & NPC DIALOGUE (SPEC 111, 112, 113)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="dialogue-modal" role="dialog" style="display: none;">
+        <div class="dossier-card dialogue-card">
+          <div class="dialogue-speaker-banner">
+            <span class="dialogue-avatar" id="dialogue-speaker-avatar">🥋</span>
+            <div class="dialogue-speaker-meta">
+              <h3 class="dialogue-speaker-name" id="dialogue-speaker-name">Grandmaster Jin</h3>
+              <span class="dialogue-speaker-title" id="dialogue-speaker-title">Elder of the Silent Veil</span>
+            </div>
+          </div>
+          <div class="dialogue-text-body" id="dialogue-text-content">
+            "Steel your spirit, young ronin. The Demon Shogun's eclipse draws near, and only the mastery of all five paths can pierce the dark veil."
+          </div>
+          <div class="dialogue-actions-row">
+            <button class="action-cta-btn btn-active" id="btn-dialogue-continue">CONTINUE</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 13: PHOTO MODE OVERLAY (SPEC 107)
+           ==================================================================== -->
+      <div class="photo-mode-overlay" id="photo-mode-overlay" style="display: none;">
+        <div class="photo-mode-banner">
+          <span>📷 PHOTO MODE ACTIVE — DRAG TO PAN • SCROLL TO ZOOM</span>
+          <div class="photo-controls-row">
+            <button class="sys-icon-btn btn-sm" id="btn-photo-capture">📸 CAPTURE PHOTO</button>
+            <button class="sys-icon-btn btn-sm" id="btn-photo-hide-ui">HIDE HUD</button>
+            <button class="sys-icon-btn btn-sm btn-danger" id="btn-photo-exit">EXIT PHOTO MODE [P]</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 14: PRE-BATTLE LOADOUT & PRESETS (SPECS 187 - 194)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="loadout-modal" role="dialog" style="display: none;">
+        <div class="dossier-card" style="max-width: 900px;">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">PRE-BATTLE TACTICAL LOADOUT</h2>
+            <div class="loadout-modal-grid">
+              <!-- Left: Enemy Intel & Weaknesses (Spec 164) -->
+              <div class="enemy-intel-panel">
+                <span class="loadout-section-title">TARGET INTELLIGENCE</span>
+                <div class="intel-boss-badge">
+                  <span class="intel-boss-avatar" id="loadout-boss-avatar">👹</span>
+                  <div class="intel-boss-meta">
+                    <h4 id="loadout-boss-name">Lord Yoshiteru</h4>
+                    <span id="loadout-boss-style">Iron Bulwark Style</span>
+                  </div>
+                </div>
+                <div class="intel-traits-list" id="loadout-boss-weaknesses">
+                  <div class="intel-trait-item">
+                    <span class="intel-trait-name">⚠️ Guard Vulnerability:</span>
+                    <span>Guard gauge breaks quickly under repeated Tiger kicks and low sweeps.</span>
+                  </div>
+                  <div class="intel-trait-item">
+                    <span class="intel-trait-name">⚔️ Counter Window:</span>
+                    <span>Vulnerable for 24 frames after missing heavy overhead cleave.</span>
+                  </div>
+                </div>
+                <button class="action-cta-btn btn-replay" id="btn-quick-equip" style="margin-top: auto;">
+                  ⚡ RECOMMENDED LOADOUT
+                </button>
+              </div>
+
+              <!-- Right: Character Roster, Presets & Skills (Spec 189 - 192) -->
+              <div class="loadout-setup-panel">
+                <div>
+                  <span class="loadout-section-title">PLAYABLE CHAMPION (SPECS 208-211)</span>
+                  <div class="char-roster-row" id="loadout-roster-row">
+                    <button class="char-card-btn char-selected" data-char="jin">
+                      <div class="char-avatar-box">🥷</div>
+                      <div class="char-meta">
+                        <h5>Jin Kageyoshi</h5>
+                        <span>Shadow Dualist (Balanced)</span>
+                      </div>
+                    </button>
+                    <button class="char-card-btn" data-char="tomoe">
+                      <div class="char-avatar-box">🌸</div>
+                      <div class="char-meta">
+                        <h5>Lady Tomoe</h5>
+                        <span>Gale Naginata (Fast/Crit)</span>
+                      </div>
+                    </button>
+                    <button class="char-card-btn" data-char="raizo">
+                      <div class="char-avatar-box">🪓</div>
+                      <div class="char-meta">
+                        <h5>Raizo the Mountain</h5>
+                        <span>Kanabo Mauler (Heavy/Poise)</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <span class="loadout-section-title">BUILD PRESETS (SPEC 189)</span>
+                  <div class="presets-chips-row" id="loadout-presets-chips">
+                    <button class="preset-chip-btn active-preset" data-preset="balanced">⚖️ Balanced</button>
+                    <button class="preset-chip-btn" data-preset="fast">⚡ Fast Flurry</button>
+                    <button class="preset-chip-btn" data-preset="heavy">💥 Iron Titan</button>
+                    <button class="preset-chip-btn" data-preset="boss_hunter">🏹 Boss Hunter</button>
+                  </div>
+                </div>
+
+                <div>
+                  <span class="loadout-section-title">EQUIPPED ACTIVE SKILLS (SPEC 190, 192)</span>
+                  <div class="skills-slots-row" id="loadout-skills-slots">
+                    <div class="skill-slot-card">
+                      <div class="skill-slot-header">
+                        <span class="skill-slot-label">SLOT 1 [I]</span>
+                        <span class="skill-cd-badge">6.0s CD</span>
+                      </div>
+                      <span class="skill-title-text">Dash Strike</span>
+                      <span class="skill-desc-text">Swift piercing thrust with 12 invincible startup frames.</span>
+                    </div>
+                    <div class="skill-slot-card">
+                      <div class="skill-slot-header">
+                        <span class="skill-slot-label">SLOT 2</span>
+                        <span class="skill-cd-badge">8.5s CD</span>
+                      </div>
+                      <span class="skill-title-text">Energy Burst</span>
+                      <span class="skill-desc-text">Radial kinetic nova that breaks nearby incoming projectiles.</span>
+                    </div>
+                    <div class="skill-slot-card">
+                      <div class="skill-slot-header">
+                        <span class="skill-slot-label">SLOT 3</span>
+                        <span class="skill-cd-badge">12.0s CD</span>
+                      </div>
+                      <span class="skill-title-text">Counter Shield</span>
+                      <span class="skill-desc-text">Impenetrable bulwark absorbing 100% impact damage.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="action-cta-btn btn-active" id="btn-loadout-commence">
+                  ⚔️ COMMENCE DUEL WITH LOADOUT
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL 15: PLAYER PROFILE & LIFETIME CODEX (SPECS 202 - 207)
+           ==================================================================== -->
+      <div class="combat-dossier-modal" id="profile-modal" role="dialog" style="display: none;">
+        <div class="dossier-card" style="max-width: 820px;">
+          <button class="dossier-close-btn modal-close-btn" type="button">✕</button>
+          <div class="modal-inner-content">
+            <h2 class="modal-heading">WARRIOR PROFILE & LIFETIME RECORDS</h2>
+            
+            <div class="profile-header-banner">
+              <span class="profile-avatar-large">🥷</span>
+              <div style="flex: 1;">
+                <h3 style="margin: 0; font-family: var(--font-cinzel); font-size: 1.25rem; color: #fff;" id="prof-hero-name">Jin Kageyoshi</h3>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+                  <span style="font-size: 0.75rem; color: var(--gold-light);">ACTIVE TITLE:</span>
+                  <select class="profile-title-dropdown" id="profile-title-select">
+                    <option value="Novice">Novice</option>
+                    <option value="Wanderer">Wanderer</option>
+                    <option value="Fighter">Fighter</option>
+                    <option value="Master" selected>Master</option>
+                    <option value="Guardian">Guardian</option>
+                    <option value="Champion">Champion</option>
+                    <option value="Eclipse Hunter">Eclipse Hunter</option>
+                    <option value="Legend">Legend</option>
+                  </select>
+                </div>
+                <div style="margin-top: 8px; font-size: 0.72rem; color: #ffd875;">
+                  <span>Mastery Level 10 (Maxed) • 42,500 Gold Koku • Shadow Style</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lifetime Statistics 2x4 Grid (Spec 204) -->
+            <span class="loadout-section-title">LIFETIME COMBAT TELEMETRY</span>
+            <div class="stats-grid-2x4">
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" id="stat-fights">48</span>
+                <span class="stat-metric-label">TOTAL DUELS</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" style="color: #00ff88;" id="stat-wins">42</span>
+                <span class="stat-metric-label">VICTORIES</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" style="color: #ff3344;" id="stat-losses">6</span>
+                <span class="stat-metric-label">DEFEATS</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" style="color: #00e5ff;" id="stat-combo">18 Hits</span>
+                <span class="stat-metric-label">HIGHEST COMBO</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" id="stat-parries">74</span>
+                <span class="stat-metric-label">PERFECT BLOCKS</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" id="stat-dodges">112</span>
+                <span class="stat-metric-label">PERFECT DODGES</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" id="stat-bosses">14</span>
+                <span class="stat-metric-label">BOSSES SLAIN</span>
+              </div>
+              <div class="stat-metric-card">
+                <span class="stat-metric-val" style="color: #ffd875;" id="stat-dmg">284,500</span>
+                <span class="stat-metric-label">DAMAGE DEALT</span>
+              </div>
+            </div>
+
+            <!-- Collectible Profile Badges (Spec 311) -->
+            <span class="loadout-section-title">COLLECTIBLE MARTIAL BADGES (SPEC 311)</span>
+            <div class="skills-slots-grid" id="profile-badges-grid" style="grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;"></div>
+
+            <!-- Recent Combat History (Spec 205) -->
+            <span class="loadout-section-title">RECENT COMBAT ENGAGEMENTS</span>
+            <table class="combat-history-table">
+              <thead>
+                <tr>
+                  <th>OPPONENT</th>
+                  <th>STAGE</th>
+                  <th>OUTCOME</th>
+                  <th>RATING</th>
+                  <th>MAX COMBO</th>
+                  <th>TIME</th>
+                </tr>
+              </thead>
+              <tbody id="profile-history-body">
+                <tr>
+                  <td>Lord Yoshiteru</td>
+                  <td>The Iron Pagoda</td>
+                  <td><span class="history-badge-win">VICTORY</span></td>
+                  <td><span class="history-grade-pill">S+</span></td>
+                  <td>14 Hits</td>
+                  <td>00:48</td>
+                </tr>
+                <tr>
+                  <td>Lady Osen the Viper</td>
+                  <td>Fortress of Weeping Mist</td>
+                  <td><span class="history-badge-win">VICTORY</span></td>
+                  <td><span class="history-grade-pill">S</span></td>
+                  <td>11 Hits</td>
+                  <td>01:05</td>
+                </tr>
+                <tr>
+                  <td>Master Kurokawa</td>
+                  <td>Torii of the Blood Moon</td>
+                  <td><span class="history-badge-win">VICTORY</span></td>
+                  <td><span class="history-grade-pill">A</span></td>
+                  <td>9 Hits</td>
+                  <td>01:14</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL: GAUNTLET, TOURNAMENT & DAILY TRIALS (SPECS 299-311)
+           ==================================================================== -->
+      <div class="game-modal-backdrop" id="challenge-modal" style="display: none;">
+        <div class="game-modal-panel modal-lg">
+          <div class="game-modal-header">
+            <span class="game-modal-title">🏆 TRIALS OF ASCENDANCE</span>
+            <button class="sys-icon-btn btn-sm" id="btn-close-challenge-modal">✕ CLOSE</button>
+          </div>
+          
+          <div class="character-tabs-row" id="challenge-tabs-row" style="margin-bottom: 14px;">
+            <button class="char-tab-btn active" data-trial="daily">DAILY TRIAL</button>
+            <button class="char-tab-btn" data-trial="gauntlet">GAUNTLET ROGUELITE</button>
+            <button class="char-tab-btn" data-trial="tournament">TOURNAMENT</button>
+            <button class="char-tab-btn" data-trial="mutators">MUTATORS</button>
+          </div>
+
+          <div id="trial-content-area">
+            <!-- Daily Seed Container -->
+            <div id="trial-daily-box" class="loadout-intel-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <b style="color: #ffd56b; font-size: 1.1rem;" id="daily-trial-title">DAILY TRIAL: TODAY</b>
+                <span class="preset-chip" style="background: rgba(212,175,55,0.2); color: #ffd56b;" id="daily-trial-seed">SEED: 2026-09-24</span>
+              </div>
+              <p style="color: #c5bcae; font-size: 0.85rem;" id="daily-trial-desc">
+                Engage Champion <b id="daily-enemy-name">Master Kurokawa</b> at the <b id="daily-arena-name">Crimson Bamboo Grove</b> under mutator <b id="daily-mutator-name">Gale Velocity</b> (+25% Speed).
+              </p>
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button class="sys-icon-btn" id="btn-launch-daily-trial" style="background: #2a1b12; border-color: #d4af37; color: #ffd56b; font-weight: bold; flex: 1;">⚔️ ENTER DAILY TRIAL</button>
+              </div>
+            </div>
+
+            <!-- Gauntlet Roguelite Container -->
+            <div id="trial-gauntlet-box" style="display: none;">
+              <p style="color: #a89476; font-size: 0.85rem; margin-bottom: 10px;">Ascend 5 floors. Health carries over between fights. Draft 1 mythical martial perk after each victory.</p>
+              <div class="skills-slots-grid" id="gauntlet-perks-draft" style="margin-bottom: 12px;"></div>
+              <button class="sys-icon-btn" id="btn-start-gauntlet" style="width: 100%; background: #1c2b18; border-color: #4caf50; color: #a5d6a7; font-weight: bold;">🔥 BEGIN GAUNTLET ASCENT</button>
+            </div>
+
+            <!-- Tournament Container -->
+            <div id="trial-tournament-box" style="display: none;">
+              <div class="profile-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 12px;">
+                <div class="stat-metric-card"><span class="stat-card-title">ROUND 1</span><span class="stat-card-val" style="font-size: 0.95rem;">Ren the Wind</span><span class="stat-card-title" style="color: #81c784;">Quarter-Final</span></div>
+                <div class="stat-metric-card"><span class="stat-card-title">ROUND 2</span><span class="stat-card-val" style="font-size: 0.95rem;">Master Kurokawa</span><span class="stat-card-title" style="color: #ffd56b;">Semi-Final</span></div>
+                <div class="stat-metric-card"><span class="stat-card-title">ROUND 3</span><span class="stat-card-val" style="font-size: 0.95rem;">The Iron Warden</span><span class="stat-card-title" style="color: #ff8a80;">Grand Final</span></div>
+              </div>
+              <button class="sys-icon-btn" id="btn-start-tournament" style="width: 100%; background: #26162b; border-color: #ba68c8; color: #e1bee7; font-weight: bold;">👑 ENTER CHAMPIONS BRACKET</button>
+            </div>
+
+            <!-- Mutators Container -->
+            <div id="trial-mutators-box" style="display: none;">
+              <div class="skills-slots-grid" id="mutators-catalog-grid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL: WORLD MAP, FACTIONS & SECRETS (SPECS 316-352)
+           ==================================================================== -->
+      <div class="game-modal-backdrop" id="world-lore-modal" style="display: none;">
+        <div class="game-modal-panel modal-lg">
+          <div class="game-modal-header">
+            <span class="game-modal-title">📜 CHRONICLES & SECRETS OF TSUKISHIMA</span>
+            <button class="sys-icon-btn btn-sm" id="btn-close-world-modal">✕ CLOSE</button>
+          </div>
+
+          <div class="character-tabs-row" id="world-tabs-row" style="margin-bottom: 14px;">
+            <button class="char-tab-btn active" data-worldtab="factions">CLANS & FACTIONS</button>
+            <button class="char-tab-btn" data-worldtab="secrets">SECRET CONTENT</button>
+            <button class="char-tab-btn" data-worldtab="endings">ENDINGS GALLERY</button>
+            <button class="char-tab-btn" data-worldtab="trainers">MASTER TRAINERS</button>
+          </div>
+
+          <div id="world-tab-content">
+            <!-- Factions Tab -->
+            <div id="world-factions-box">
+              <div class="profile-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 12px;">
+                <div class="stat-metric-card"><span class="stat-card-title">SILENT VEIL</span><span class="stat-card-val" style="font-size: 1.1rem; color: #80deea;">75% Revered</span><p style="font-size: 0.75rem; color: #a89476; margin-top: 4px;">Shadow ronin & ninja intelligence clan.</p></div>
+                <div class="stat-metric-card"><span class="stat-card-title">ORDER OF DAWN</span><span class="stat-card-val" style="font-size: 1.1rem; color: #ffd56b;">45% Neutral</span><p style="font-size: 0.75rem; color: #a89476; margin-top: 4px;">Sun temple priestesses & naginata adepts.</p></div>
+                <div class="stat-metric-card"><span class="stat-card-title">IRON BROTHERHOOD</span><span class="stat-card-val" style="font-size: 1.1rem; color: #ffab91;">25% Cautious</span><p style="font-size: 0.75rem; color: #a89476; margin-top: 4px;">Fortress champions wielding colossal steel.</p></div>
+              </div>
+            </div>
+
+            <!-- Secrets Tab -->
+            <!-- Secrets Tab (Specs 348-350) -->
+            <div id="world-secrets-box" style="display: none;">
+              <div class="loadout-intel-box" style="margin-bottom: 10px;">
+                <b style="color: #ff5252;">👹 SECRET BOSS: THE VOID SOVEREIGN (KAGE-NO-SHIN)</b>
+                <p style="font-size: 0.8rem; color: #c5bcae; margin-top: 4px;">Unlock Condition: Achieve S+ rank on all 5 main story chapters and unseal the Sacred Eclipse Relic.</p>
+                <button class="sys-icon-btn btn-sm" id="btn-fight-secret-boss" style="margin-top: 8px; background: #3b1111; border-color: #ff5252; color: #ff8a80; font-weight: bold;">⚔️ CONFRONT THE VOID SOVEREIGN</button>
+              </div>
+              <div class="loadout-intel-box" style="margin-bottom: 10px;">
+                <b style="color: #ba68c8;">🗡️ SECRET WEAPON: ECLIPSE ODACHI (MURAMASA ZERO)</b>
+                <p style="font-size: 0.8rem; color: #c5bcae; margin-top: 4px;">+45% Damage, Dimensional Rifts on heavy strikes. Found at the summit of the Broken Pagoda.</p>
+                <button class="sys-icon-btn btn-sm" id="btn-equip-secret-weapon" style="margin-top: 8px; background: #2b1335; border-color: #ba68c8; color: #e1bee7; font-weight: bold;">🗡️ EQUIP ECLIPSE ODACHI</button>
+              </div>
+              <div class="loadout-intel-box">
+                <b style="color: #80deea;">🌌 SECRET STYLE: VOID FORM (SPATIAL MASTERY)</b>
+                <p style="font-size: 0.8rem; color: #c5bcae; margin-top: 4px;">Forbidden 7th fighting style: instantaneous phase teleportation on perfect parry.</p>
+                <button class="sys-icon-btn btn-sm" id="btn-equip-secret-style" style="margin-top: 8px; background: #0e2a36; border-color: #80deea; color: #b2ebf2; font-weight: bold;">🌌 ADOPT VOID FORM</button>
+              </div>
+            </div>
+
+            <!-- Endings Gallery Tab (Specs 351, 352) -->
+            <div id="world-endings-box" style="display: none;">
+              <div class="profile-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-metric-card">
+                  <span class="stat-card-title">ENDING I</span>
+                  <span class="stat-card-val" style="font-size: 0.95rem;">The Ronin's Rest</span>
+                  <p style="font-size: 0.72rem; color: #81c784; margin-top: 4px;">Normal: The Warden falls; mountain gates sealed.</p>
+                  <button class="sys-icon-btn btn-sm" id="btn-view-ending-1" style="margin-top: 6px;">📜 READ EPILOGUE</button>
+                </div>
+                <div class="stat-metric-card">
+                  <span class="stat-card-title">ENDING II</span>
+                  <span class="stat-card-val" style="font-size: 0.95rem;">Dawn of the Eclipse</span>
+                  <p style="font-size: 0.72rem; color: #ffd56b; margin-top: 4px;">Alt: Player absorbs dark sun core.</p>
+                  <button class="sys-icon-btn btn-sm" id="btn-view-ending-2" style="margin-top: 6px;">📜 READ EPILOGUE</button>
+                </div>
+                <div class="stat-metric-card">
+                  <span class="stat-card-title">TRUE ENDING</span>
+                  <span class="stat-card-val" style="font-size: 0.95rem;">Ascendance of Veil</span>
+                  <p style="font-size: 0.72rem; color: #80deea; margin-top: 4px;">True: Void Sovereign banished forever.</p>
+                  <button class="sys-icon-btn btn-sm" id="btn-view-ending-3" style="margin-top: 6px;">📜 READ EPILOGUE</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Master Trainers Tab -->
+            <div id="world-trainers-box" style="display: none;">
+              <div class="skills-slots-grid" id="master-trainer-challenges"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MODAL: GAME CREDITS & LICENSE REGISTRY (SPECS 353-356)
+           ==================================================================== -->
+      <div class="game-modal-backdrop" id="credits-modal" style="display: none;">
+        <div class="game-modal-panel">
+          <div class="game-modal-header">
+            <span class="game-modal-title">ℹ️ CREDITS & ORIGINAL BRAND IDENTITY</span>
+            <button class="sys-icon-btn btn-sm" id="btn-close-credits-modal">✕ CLOSE</button>
+          </div>
+          <div class="loadout-intel-box" style="margin-bottom: 12px;">
+            <b style="color: #ffd56b; font-size: 1.1rem;">SHADOW SAMURAI: CHRONICLES OF TSUKISHIMA</b>
+            <p style="font-size: 0.85rem; color: #c5bcae; margin-top: 6px;">Version 1.0.0 (Master Production Release) • 100% Original Dark-Fantasy IP.</p>
+          </div>
+          <div style="font-size: 0.8rem; color: #c5bcae; line-height: 1.5; margin-bottom: 12px;">
+            <p><b>Original Concept & Architecture:</b> Advanced Martial Arts Combat Core</p>
+            <p><b>Lead Neural Coding Agent:</b> Antigravity Systems (Google DeepMind)</p>
+            <p><b>Procedural Canvas Shader & Audio Lab:</b> Original Web Audio Synthesizer & Silhouette Shaders</p>
+            <p><b>Localization Preservation:</b> Sinhala, Tamil, and English Multilingual Pipeline</p>
+          </div>
+          <div class="loadout-intel-box">
+            <b style="color: #80deea;">THIRD-PARTY LICENSES:</b>
+            <p style="font-size: 0.75rem; color: #a89476; margin-top: 4px;">• Google Fonts (Cinzel, Outfit, Noto Sans Sinhala, Noto Sans Tamil) — SIL Open Font License 1.1<br>• HTML5 Canvas & Web Audio API Core — W3C Open Web Standards</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           QA & BALANCE DASHBOARD OVERLAY [F4] (SPECS 370-385)
+           ==================================================================== -->
+      <div class="frame-debugger-overlay" id="qa-dashboard-overlay" style="display: none; left: auto; right: 18px; width: 340px;">
+        <div class="debugger-header">
+          <span class="debugger-title">📊 QA & BALANCE DASHBOARD [F4]</span>
+          <button class="dbg-btn" id="btn-close-qa-dashboard" style="padding: 1px 6px;">✕</button>
+        </div>
+        <div class="debugger-telemetry-box" id="qa-metrics-readout">
+          <div><b class="dbg-line-highlight">BUILD:</b> v1.0.0-master | <b class="dbg-line-highlight">STATUS:</b> RELEASE_READY</div>
+          <div><b>PLAYER DPS:</b> <span id="qa-p-dps">0</span> | <b>ENEMY DPS:</b> <span id="qa-e-dps">0</span></div>
+          <div><b>AVG COMBAT TIME:</b> 42s | <b>AVG COMBO:</b> 6.8 Hits</div>
+          <div><b>FAIRNESS SCORE:</b> <span id="qa-fairness-score" style="color: #81c784;">100 / 100</span></div>
+          <div><b>SMOKE TEST:</b> <span id="qa-smoke-status" style="color: #ffd56b;">READY</span></div>
+        </div>
+        <div style="display: flex; gap: 6px; margin-top: 6px;">
+          <button class="dbg-btn" id="btn-run-smoke-test" style="flex: 1; background: #1c2b18; color: #a5d6a7;">RUN SMOKE TEST</button>
+          <button class="dbg-btn" id="btn-export-qa-report" style="flex: 1;">EXPORT REPORT</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           FRAME DEBUGGER FLOATING OVERLAY (SPECS 148, 149)
+           ==================================================================== -->
+      <div class="frame-debugger-overlay" id="frame-debugger-overlay" style="display: none;">
+        <div class="debugger-header">
+          <span class="debugger-title">COMBAT FRAME DEBUGGER [F2]</span>
+          <button class="dbg-btn" id="btn-close-debugger" style="padding: 1px 6px;">✕</button>
+        </div>
+        <div class="debugger-controls-row">
+          <button class="dbg-btn" id="dbg-btn-pause">⏸️ PAUSE</button>
+          <button class="dbg-btn" id="dbg-btn-step-prev">⏮️ STEP -1</button>
+          <button class="dbg-btn" id="dbg-btn-step-next">⏭️ STEP +1</button>
+          <button class="dbg-btn" id="dbg-btn-slow">0.25x SLOW</button>
+          <button class="dbg-btn" id="dbg-btn-normal">1.0x NORMAL</button>
+        </div>
+        <div class="debugger-telemetry-box" id="dbg-telemetry-readout">
+          <div><b class="dbg-line-highlight">FRAME:</b> <span id="dbg-frame-num">0</span> | <b class="dbg-line-highlight">SCALE:</b> <span id="dbg-scale-num">1.0x</span></div>
+          <div><b>PLAYER STATE:</b> <span id="dbg-p-state">IDLE</span></div>
+          <div><b>ATTACK PHASE:</b> <span id="dbg-p-phase">NONE</span> (F: <span id="dbg-p-atkframe">0</span>)</div>
+          <div><b>POISE:</b> P: <span id="dbg-p-poise">100</span> | E: <span id="dbg-e-poise">250</span></div>
+          <div><b>BUFFER QUEUE:</b> <span id="dbg-buffer-queue">[EMPTY]</span></div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button class="dbg-btn" id="dbg-btn-export-csv" style="flex: 1;">EXPORT CSV</button>
+          <button class="dbg-btn" id="dbg-btn-validate" style="flex: 1;">VALIDATE CONTENT</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOAST NOTIFICATIONS QUEUE CONTAINER (SPEC 258)
+           ==================================================================== -->
+      <div class="game-toast-container" id="game-toast-container"></div>
+
+      <!-- ====================================================================
+           CINEMATIC DUEL OVERLAY (KANJI "決闘")
+           ==================================================================== -->
+      <div class="duel-cinematic-overlay" id="duel-cinematic-overlay" aria-hidden="true">
+        <div class="cinematic-slash-line"></div>
+        <div class="cinematic-kanji-title" id="cinematic-kanji">決闘</div>
+        <div class="cinematic-subtext" id="cinematic-matchup">JIN KAGEYOSHI vs LORD YOSHITERU</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Core Scripts -->
+  <script src="audio.js"></script>
+  <script src="particles.js"></script>
+  <script src="engine/combat-data.js"></script>
+  <script src="engine/event-bus.js"></script>
+  <script src="engine/animation-engine.js"></script>
+  <script src="engine/combat-enhancements.js"></script>
+  <script src="engine/loadout-and-skills.js"></script>
+  <script src="engine/fighter.js"></script>
+  <script src="engine/combo-system.js"></script>
+  <script src="engine/environmental-arena.js"></script>
+  <script src="engine/combat-director.js"></script>
+  <script src="engine/challenge-roguelite.js"></script>
+  <script src="engine/world-and-hub.js"></script>
+  <script src="engine/combat-engine.js"></script>
+  <script src="engine/ai-director.js"></script>
+  <script src="engine/rpg-systems.js"></script>
+  <script src="engine/game-modes.js"></script>
+  <script src="engine/developer-tools.js"></script>
+  <script src="engine/qa-balance-dashboard.js"></script>
+  <script src="engine/save-repository.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
